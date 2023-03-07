@@ -52,7 +52,6 @@ public_users.get('/title/:title',function (req, res) {
     res.send(Title);
 });
 
-//  Get book review
 public_users.get('/review/:isbn',function (req, res) {
     const isbn=req.params.isbn;
     const book = books[isbn];
@@ -103,7 +102,6 @@ const getByISBN=async(isbn)=>{
     res.send(books[returnedIsbn]);
   })
   
-    // Get books based on author
   const getByAuthor=async(author)=>{
     try{
       
@@ -132,7 +130,7 @@ const getByISBN=async(isbn)=>{
       res.send(data);
     })
   
-    // Get books based on title
+    
   const getByTitle=async(title)=>{
     try{
       
