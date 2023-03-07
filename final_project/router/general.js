@@ -64,4 +64,101 @@ public_users.get('/review/:isbn',function (req, res) {
     }
 });
 
+const getbooks = async () => {
+	try{
+		const getBooks = await Promise.resolve (books)
+		if (getBooks) {
+			return getBooks
+		} else {
+			return Promise.reject (new error('Books not found'))
+		}
+	} catch (error) {
+		console.log (error)
+	}
+}
+
+public_users.get('/',async (req, res)=> {
+  const getbooks = await getbooks()
+  res.json (getbooks)
+});
+
+const getByISBN=async(isbn)=>{
+    try{
+      const getISBN=await Promise.resolve(isbn);
+      if(getISBN){
+        return Promise.resolve(isbn)
+      }
+      else{
+        return Promise.reject(new error("Book with the isbn not found!"));
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+  
+  public_users.get('/isbn/:isbn',async(req,res)=>{
+    const isbn=req.params.isbn;
+    const returnedIsbn=await getByISBN(isbn);
+    res.send(books[returnedIsbn]);
+  })
+  
+    // Get books based on author
+  const getByAuthor=async(author)=>{
+    try{
+      
+      if(author){
+        const authBook=[];
+        Object.values(books).map((book)=>{
+        if(book.author===author){
+          authBook.push(book);
+        }})
+        return Promise.resolve(authBook);
+      }
+      else{
+        return Promise.reject(new error("Book with the author name not found!!!"));
+      }
+      
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+  
+  
+    public_users.get('/author/:author',async(req,res)=>{
+      const author=req.params.author;
+      const data=await getByAuthor(author);
+      res.send(data);
+    })
+  
+    // Get books based on title
+  const getByTitle=async(title)=>{
+    try{
+      
+      if(title){
+        const titleBook=[];
+        Object.values(books).map((book)=>{
+        if(book.title===title){
+          titleBook.push(book);
+        }})
+        return Promise.resolve(titleBook);
+      }
+      else{
+        return Promise.reject(new error("Book with the author name not found!!!"));
+      }
+      
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+  
+  
+    public_users.get('/title/:title',async(req,res)=>{
+      const title=req.params.title;
+      const data=await getByAuthor(title);
+      res.send(data);
+    })
+
 module.exports.general = public_users;
